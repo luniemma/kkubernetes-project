@@ -1,0 +1,27 @@
+apiVersion: app/v1
+kind: Deployement
+metadata:
+  name: vprodb
+  labels:
+    app: vprodb
+    Spec:
+      selector:
+      replicas: 2
+      template:
+        metadata:
+          labels:
+            app: vprodb
+    spec:
+      containers:
+        - name: vprodb
+          image: vprofile/vrofildb:v1
+          ports:
+            - name: vprodb-port
+              containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+              secretKeyRef:
+                name: app-secret
+                key: db-pass
+      nodeSelector:
